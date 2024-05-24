@@ -40,13 +40,13 @@ def add_employees():
     Minit = info["Minit"]
     Lname = info["Lname"]
     Bdate = info["Bdate"]
-    Address = info["Adress"]
+    Address = info["Address"]
     Sex = info["Sex"]
     Salary = info["Salary"]
     Super_ssn = info["Super_ssn"]
     DL_id = info["DL_id"]
     cur.execute(
-        """ INSERT INTO actor (ssn, Fname, Minit, Lname, Bdate, Adress, Sex, Salary, Super_ssn, DL_id) VALUE (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+        """ INSERT INTO employee (ssn, Fname, Minit, Lname, Bdate, Address, Sex, Salary, Super_ssn, DL_id) VALUE (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
         (ssn, Fname, Minit, Lname, Bdate, Address, Sex, Salary, Super_ssn, DL_id),
     )
     mysql.connection.commit()
