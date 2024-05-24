@@ -61,5 +61,33 @@ def add_employees():
     )
 
 
+@app.route("/employees/<int:ssn>", methods=["PUT"])
+def update_employees(ssn):
+    cur = mysql.connection.cursor()
+    info = request.get_json()
+    Fname = info["Fname"]
+    Minit = info["Minit"]
+    Lname = info["Lname"]
+    Bdate = info["Bdate"]
+    Address = info["Address"]
+    Sex = info["Sex"]
+    Salary = info["Salary"]
+    Super_ssn = info["Super_ssn"]
+    DL_id = info["DL_id"]
+    cur.execute(
+        """ UPDATE employee SET Fname = %s, Minit = %s, Lname = %s, Bdate = %s, Address = %s, Sex = %s, Salary = %s, Super_ssn = %s, DL_id = %s WHERE ssn = %s """,
+        (Fname, Minit, Lname, Bdate, Address, Sex, Salary, Super_ssn, DL_id, ssn),
+    )
+    mysql.connection.commit()
+    rows_affected = cur.rowcount
+    cur.close()
+    return make_response(
+        jsonify(
+            {"message": "actor updated successfully", "rows_affected": rows_affected}
+        ),
+        200,
+    )
+
+
 if __name__ == "__main__":
     app.run(debug=True)
