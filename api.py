@@ -1,4 +1,4 @@
-from flask import Flask, make_response, jsonify, request
+from flask import Flask, make_response, jsonify, request, render_template
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
@@ -21,8 +21,8 @@ def data_fetch(query):
 
 
 @app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
+def index():
+    return render_template("index.html")
 
 
 @app.route("/employees", methods=["GET"])

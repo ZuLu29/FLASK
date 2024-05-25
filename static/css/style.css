@@ -1,29 +1,26 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
 }
 
-h1 {
-    color: #333;
+#employeeForm {
+    margin: 20px 0;
 }
 
-form {
+#employeeForm input {
+    display: block;
+    margin: 5px 0;
+}
+
+#employeesList {
     margin-top: 20px;
 }
 
-input, button {
-    display: block;
-    margin: 10px 0;
+.employee {
+    border: 1px solid #ddd;
     padding: 10px;
+    margin: 5px 0;
 }
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
+.employee button {
+    margin-left: 10px;
 }

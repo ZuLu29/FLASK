@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <title>Employee Management</title>
+  </head>
+  <body>
+    <h1>Employee Management</h1>
+    <div>
+      <input type="text" id="search" placeholder="Search by SSN" />
+      <button onclick="searchEmployee()">Search</button>
+    </div>
+    <div id="employeeForm">
+      <input type="text" id="ssn" placeholder="SSN" />
+      <input type="text" id="fname" placeholder="First Name" />
+      <input type="text" id="minit" placeholder="Middle Initial" />
+      <input type="text" id="lname" placeholder="Last Name" />
+      <input type="date" id="bdate" placeholder="Birth Date" />
+      <input type="text" id="address" placeholder="Address" />
+      <input type="text" id="sex" placeholder="Sex" />
+      <input type="number" id="salary" placeholder="Salary" />
+      <input type="text" id="super_ssn" placeholder="Supervisor SSN" />
+      <input type="text" id="dl_id" placeholder="DL ID" />
+      <button onclick="createEmployee()">Create</button>
+      <button onclick="updateEmployee()">Update</button>
+    </div>
+    <div id="employeesList">
+      <!-- Employees will be listed here -->
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+  </body>
+</html>
