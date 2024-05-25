@@ -55,7 +55,7 @@ def add_employees():
     cur.close()
     return make_response(
         jsonify(
-            {"message": "actor added successfully", "rows_affected": rows_affected}
+            {"message": "employee added successfully", "rows_affected": rows_affected}
         ),
         201,
     )
@@ -83,7 +83,7 @@ def update_employees(ssn):
     cur.close()
     return make_response(
         jsonify(
-            {"message": "actor updated successfully", "rows_affected": rows_affected}
+            {"message": "employee updated successfully", "rows_affected": rows_affected}
         ),
         200,
     )
