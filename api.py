@@ -1,15 +1,31 @@
 from flask import Flask, make_response, jsonify, request, render_template
 from flask_mysqldb import MySQL
+from marshmallow import Schema, fields, ValidationError
 
 app = Flask(__name__)
 app.config["MYSQL_HOST"] = "localhost"
 app.config["MYSQL_USER"] = "root"
 app.config["MYSQL_PASSWORD"] = "ADMIN"
 app.config["MYSQL_DB"] = "company"
-
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
+
+
+class EmployeeSchema(Schema):
+    ssn = fields.String(required=True)
+    Fname = fields.String(required=True)
+    Minit = fields.String(required=True, validate=lambda x: len(x) == 1)
+    Lname = fields.String(required=True)
+    Bdate = fields.Date(required=True)
+    Address = fields.String(required=True)
+    Sex = fields.String(required=True, validate=lambda x: x in ["M", "F"])
+    Salary = fields.Float(required=True)
+    Super_ssn = fields.String(required=True)
+    DL_id = fields.String(required=True)
+
+
+employee_schema = EmployeeSchema()
 
 
 def data_fetch(query):
@@ -59,6 +75,19 @@ def add_employees():
         ),
         201,
     )
+
+
+@app.route("/employees/<int:ssn>", methods=["GET"])
+def get_employee(ssn):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM employee WHERE ssn = %s", (ssn,))
+    data = cur.fetchone()
+    cur.close()
+    print(data)  # Add this line
+    if data:
+        return make_response(jsonify(data), 200)
+    else:
+        return make_response(jsonify({"message": "Employee not found"}), 404)
 
 
 @app.route("/employees/<int:ssn>", methods=["PUT"])
