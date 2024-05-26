@@ -41,9 +41,21 @@ def handle_validation_error(e):
     return make_response(jsonify(e.messages), 400)
 
 
-@app.route("/")
-def index():
+@app.route("/search", methods=["GET"])
+def search_page():
     return render_template("index.html")
+
+
+@app.route("/search_employees", methods=["GET"])
+def search_employees():
+    search_query = request.args.get("query", "")
+    if search_query:
+        data = data_fetch(
+            f"SELECT * FROM employee WHERE Fname LIKE '%{search_query}%' OR Lname LIKE '%{search_query}%'"
+        )
+    else:
+        data = data_fetch("SELECT * FROM employee")
+    return make_response(jsonify(data), 200)
 
 
 @app.route("/employees", methods=["GET"])
