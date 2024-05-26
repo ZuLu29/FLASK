@@ -1,6 +1,6 @@
 from flask import Flask, make_response, jsonify, request, render_template
 from flask_mysqldb import MySQL
-from marshmallow import Schema, fields, ValidationError
+from marshmallow import Schema, fields, ValidationError, EXCLUDE
 
 app = Flask(__name__)
 app.config["MYSQL_HOST"] = "localhost"
@@ -99,11 +99,29 @@ def get_employee(ssn):
         return make_response(jsonify({"message": "Employee not found"}), 404)
 
 
+class EmployeeUpdateSchema(Schema):
+    Fname = fields.String(required=True)
+    Minit = fields.String(required=True, validate=lambda x: len(x) == 1)
+    Lname = fields.String(required=True)
+    Bdate = fields.Date(required=True)
+    Address = fields.String(required=True)
+    Sex = fields.String(required=True, validate=lambda x: x in ["M", "F"])
+    Salary = fields.Float(required=True)
+    Super_ssn = fields.String(required=True)
+    DL_id = fields.String(required=True)
+
+    class Meta:
+        unknown = EXCLUDE  # Ignore unknown fields in the request payload
+
+
+employee_update_schema = EmployeeUpdateSchema()
+
+
 @app.route("/employees/<int:ssn>", methods=["PUT"])
 def update_employees(ssn):
     cur = mysql.connection.cursor()
     try:
-        info = employee_schema.load(request.get_json())
+        info = employee_update_schema.load(request.get_json())
     except ValidationError as err:
         return make_response(jsonify(err.messages), 400)
 
