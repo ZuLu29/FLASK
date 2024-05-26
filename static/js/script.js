@@ -1,100 +1,29 @@
-function createEmployee() {
-    const employee = {
-        ssn: document.getElementById('ssn').value,
-        Fname: document.getElementById('fname').value,
-        Minit: document.getElementById('minit').value,
-        Lname: document.getElementById('lname').value,
-        Bdate: document.getElementById('bdate').value,
-        Address: document.getElementById('address').value,
-        Sex: document.getElementById('sex').value,
-        Salary: document.getElementById('salary').value,
-        Super_ssn: document.getElementById('super_ssn').value,
-        DL_id: document.getElementById('dl_id').value
-    };
-
-    fetch('/employees', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(employee)
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-        loadEmployees();
-    });
-}
-
-function updateEmployee() {
-    const ssn = document.getElementById('ssn').value;
-    const employee = {
-        Fname: document.getElementById('fname').value,
-        Minit: document.getElementById('minit').value,
-        Lname: document.getElementById('lname').value,
-        Bdate: document.getElementById('bdate').value,
-        Address: document.getElementById('address').value,
-        Sex: document.getElementById('sex').value,
-        Salary: document.getElementById('salary').value,
-        Super_ssn: document.getElementById('super_ssn').value,
-        DL_id: document.getElementById('dl_id').value
-    };
-
-    fetch(`/employees/${ssn}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(employee)
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-        loadEmployees();
-    });
-}
-
-function deleteEmployee(ssn) {
-    fetch(`/employees/${ssn}`, {
-        method: 'DELETE'
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-        loadEmployees();
-    });
-}
-
 function searchEmployee() {
-    const ssn = document.getElementById('search').value;
-    fetch(`/employees`)
-    .then(response => response.json())
-    .then(data => {
-        const filteredEmployees = data.filter(employee => employee.ssn.includes(ssn));
-        displayEmployees(filteredEmployees);
-    });
-}
+    const ssn = document.getElementById('searchBar').value;
+    fetch(`/employees/${ssn}`)
+        .then(response => response.json())
+        .then(data => {
+            let resultDiv = document.getElementById('results');
+            resultDiv.innerHTML = '';
 
-function loadEmployees() {
-    fetch('/employees')
-    .then(response => response.json())
-    .then(data => {
-        displayEmployees(data);
-    });
+            if (data.message) {
+                resultDiv.innerHTML = `<p>${data.message}</p>`;
+            } else {
+                let employeeInfo = `
+                    <p>SSN: ${data.ssn}</p>
+                    <p>Name: ${data.Fname} ${data.Minit} ${data.Lname}</p>
+                    <p>Birth Date: ${data.Bdate}</p>
+                    <p>Address: ${data.Address}</p>
+                    <p>Sex: ${data.Sex}</p>
+                    <p>Salary: ${data.Salary}</p>
+                    <p>Supervisor SSN: ${data.Super_ssn}</p>
+                    <p>DL ID: ${data.DL_id}</p>
+                `;
+                resultDiv.innerHTML = employeeInfo;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('results').innerHTML = '<p>An error occurred while fetching employee data.</p>';
+        });
 }
-
-function displayEmployees(employees) {
-    const employeesList = document.getElementById('employeesList');
-    employeesList.innerHTML = '';
-    employees.forEach(employee => {
-        const employeeDiv = document.createElement('div');
-        employeeDiv.className = 'employee';
-        employeeDiv.innerHTML = `
-            <p>${employee.Fname} ${employee.Lname} (SSN: ${employee.ssn})</p>
-            <button onclick="deleteEmployee(${employee.ssn})">Delete</button>
-        `;
-        employeesList.appendChild(employeeDiv);
-    });
-}
-
-window.onload = loadEmployees;

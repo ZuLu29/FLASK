@@ -3,35 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Search</title>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/styles.css') }}"
+      href="{{ url_for('static', filename='styles.css') }}"
     />
-    <title>Employee Management</title>
   </head>
   <body>
-    <h1>Employee Management</h1>
-    <div>
-      <input type="text" id="search" placeholder="Search by SSN" />
+    <div class="container">
+      <h1>Employee Search</h1>
+      <input type="text" id="searchBar" placeholder="Enter SSN" />
       <button onclick="searchEmployee()">Search</button>
+      <div id="results"></div>
     </div>
-    <div id="employeeForm">
-      <input type="text" id="ssn" placeholder="SSN" />
-      <input type="text" id="fname" placeholder="First Name" />
-      <input type="text" id="minit" placeholder="Middle Initial" />
-      <input type="text" id="lname" placeholder="Last Name" />
-      <input type="date" id="bdate" placeholder="Birth Date" />
-      <input type="text" id="address" placeholder="Address" />
-      <input type="text" id="sex" placeholder="Sex" />
-      <input type="number" id="salary" placeholder="Salary" />
-      <input type="text" id="super_ssn" placeholder="Supervisor SSN" />
-      <input type="text" id="dl_id" placeholder="DL ID" />
-      <button onclick="createEmployee()">Create</button>
-      <button onclick="updateEmployee()">Update</button>
-    </div>
-    <div id="employeesList">
-      <!-- Employees will be listed here -->
-    </div>
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
   </body>
 </html>
