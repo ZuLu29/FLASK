@@ -36,6 +36,11 @@ def data_fetch(query):
     return data
 
 
+@app.errorhandler(ValidationError)
+def handle_validation_error(e):
+    return make_response(jsonify(e.messages), 400)
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -50,7 +55,11 @@ def get_employees():
 @app.route("/employees", methods=["POST"])
 def add_employees():
     cur = mysql.connection.cursor()
-    info = request.get_json()
+    try:
+        info = employee_schema.load(request.get_json())
+    except ValidationError as err:
+        return make_response(jsonify(err.messages), 400)
+
     ssn = info["ssn"]
     Fname = info["Fname"]
     Minit = info["Minit"]
@@ -93,7 +102,11 @@ def get_employee(ssn):
 @app.route("/employees/<int:ssn>", methods=["PUT"])
 def update_employees(ssn):
     cur = mysql.connection.cursor()
-    info = request.get_json()
+    try:
+        info = employee_schema.load(request.get_json())
+    except ValidationError as err:
+        return make_response(jsonify(err.messages), 400)
+
     Fname = info["Fname"]
     Minit = info["Minit"]
     Lname = info["Lname"]
